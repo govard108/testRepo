@@ -25,6 +25,9 @@ const base = import.meta.env.BASE_URL;
           <a href={base}>Главная</a>
           <a href={`${base}tags/`}>Теги</a>
         </nav>
+        <form class="search-form" action={`${base}search/`} method="get" role="search">
+          <input type="search" name="q" placeholder="Поиск..." aria-label="Поиск по сайту" />
+        </form>
       </div>
     </header>
     <main class="container">

@@ -23,6 +23,7 @@ const { Content } = await post.render();
       <div class="post-meta">
         <time datetime={post.data.date.toISOString()}>{formatDateRu(post.data.date)}</time>
       </div>
+      <p class="post-excerpt">{post.data.description}</p>
       <TagList tags={post.data.tags} />
     </header>
     {post.data.coverImage && (

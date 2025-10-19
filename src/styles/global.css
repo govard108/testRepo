@@ -20,6 +20,7 @@ a:hover { text-decoration: underline; }
 .site-header .container { display: flex; align-items: center; gap: 1rem; }
 .site-header .logo { font-weight: 700; font-size: 1.1rem; margin-right: auto; }
 .site-header nav a { margin-left: 1rem; }
+.search-form input { padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; min-width: 180px; }
 
 .site-footer { margin-top: 4rem; border-top: 1px solid var(--border); color: var(--muted); }
 
