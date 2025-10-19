@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+export interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = 'Блог', description = 'Личный блог на Astro' } = Astro.props as Props;
+const base = import.meta.env.BASE_URL;
+---
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site ?? 'https://govard108.github.io').toString()} />
+    <link rel="sitemap" type="application/xml" href={`${base}sitemap-index.xml`} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="logo" href={base}>Блог</a>
+        <nav>
+          <a href={base}>Главная</a>
+          <a href={`${base}tags/`}>Теги</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>© {new Date().getFullYear()} — Сайт на Astro. Локаль: ru-RU.</p>
+      </div>
+    </footer>
+  </body>
+</html>

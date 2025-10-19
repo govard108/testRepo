@@ -1,0 +1,19 @@
+---
+import { formatDateRu } from '../utils/date';
+import TagList from './TagList.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props { post: CollectionEntry<'posts'> }
+const { post } = Astro.props as Props;
+const base = import.meta.env.BASE_URL;
+const url = `${base}posts/${post.data.slug}/`;
+---
+<article class="post-card">
+  <h2><a href={url}>{post.data.title}</a></h2>
+  <div class="post-meta">
+    <time datetime={post.data.date.toISOString()}>{formatDateRu(post.data.date)}</time>
+  </div>
+  <p>{post.data.description}</p>
+  <TagList tags={post.data.tags} />
+  <p><a href={url}>Читать далее →</a></p>
+</article>
