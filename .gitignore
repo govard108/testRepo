@@ -4,6 +4,19 @@ node_modules/
 # Build output
 .dist/
 dist/
+# Node and Astro
+node_modules/
+.dist/
+dist/
+.astro/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.*
 
 # Logs
 npm-debug.log*
@@ -26,3 +39,7 @@ Thumbs.db
 
 # Astro cache
 .astro/
+
+# Editor
+.vscode/
+.idea/
