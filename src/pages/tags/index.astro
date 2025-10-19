@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft));
+const counts = new Map<string, number>();
+for (const p of posts) {
+  for (const t of p.data.tags) {
+    counts.set(t, (counts.get(t) ?? 0) + 1);
+  }
+}
+const sorted = Array.from(counts.entries()).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ru'));
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Теги" description="Все теги блога">
+  <h1 class="heading">Теги</h1>
+  <ul>
+    {sorted.map(([tag, count]) => (
+      <li>
+        <a href={`${base}tags/${encodeURIComponent(tag)}/`}>#{tag}</a>
+        {' '}
+        <span class="post-meta">({count})</span>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

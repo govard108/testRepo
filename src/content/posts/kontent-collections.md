@@ -1,0 +1,11 @@
+---
+title: "Content Collections в Astro"
+description: "Определяем схему коллекции постов и валидируем фронтматтер."
+date: 2024-10-13
+tags: ["astro", "контент"]
+draft: false
+slug: "content-collections"
+---
+Content Collections позволяют описать схему фронтматтера для записей, чтобы гарантировать корректные данные: заголовок, описание, дата, теги, флаг `draft` и другие поля.
+
+В этом блоге коллекция определена в `src/content/config.ts`.

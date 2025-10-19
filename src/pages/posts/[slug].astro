@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagList from '../../components/TagList.astro';
+import { formatDateRu } from '../../utils/date';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('posts', ({ data }) => !data.draft));
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as { post: CollectionEntry<'posts'> };
+const { Content } = await post.render();
+---
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="post-content">
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <div class="post-meta">
+        <time datetime={post.data.date.toISOString()}>{formatDateRu(post.data.date)}</time>
+      </div>
+      <TagList tags={post.data.tags} />
+    </header>
+    {post.data.coverImage && (
+      <p>
+        <img src={post.data.coverImage} alt="Обложка" />
+      </p>
+    )}
+    <Content />
+  </article>
+</BaseLayout>
