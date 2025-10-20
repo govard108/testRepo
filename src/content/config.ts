@@ -11,7 +11,6 @@ const posts = defineCollection({
     coverImage: z.string().optional(),
     ogImage: z.string().optional(),
   }),
-  slug: ({ defaultSlug }) => defaultSlug,
 });
 
 export const collections = { posts };
