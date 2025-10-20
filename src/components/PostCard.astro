@@ -6,7 +6,7 @@ import type { CollectionEntry } from 'astro:content';
 export interface Props { post: CollectionEntry<'posts'> }
 const { post } = Astro.props as Props;
 const base = import.meta.env.BASE_URL;
-const url = `${base}posts/${post.data.slug}/`;
+const url = `${base}posts/${post.slug}/`;
 ---
 <article class="post-card">
   <h2><a href={url}>{post.data.title}</a></h2>

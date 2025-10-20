@@ -10,8 +10,8 @@ const posts = defineCollection({
     draft: z.boolean().default(false),
     coverImage: z.string().optional(),
     ogImage: z.string().optional(),
-    slug: z.string(),
   }),
+  slug: ({ defaultSlug }) => defaultSlug,
 });
 
 export const collections = { posts };
