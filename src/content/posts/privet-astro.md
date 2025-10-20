@@ -4,7 +4,6 @@ description: "Запуск нового блога на Astro с русской 
 date: 2024-10-10
 tags: ["astro", "введение"]
 draft: false
-slug: "privet-astro"
 coverImage: "/testRepo/cover/astro.svg"
 ---
 Это мой новый блог на Astro. Здесь я буду делиться заметками о веб‑разработке, статических сайтах и новых технологиях.
