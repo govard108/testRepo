@@ -3,9 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import Pagination from '../components/Pagination.astro';
 
-// Reuse pagination from /page/[page].astro
-export { getStaticPaths } from './page/[page].astro';
-const { page } = Astro.props;
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const PAGE_SIZE = 10;
+const page = {
+  data: posts.slice(0, PAGE_SIZE),
+  currentPage: 1,
+  lastPage: Math.max(1, Math.ceil(posts.length / PAGE_SIZE)),
+};
 ---
 <BaseLayout title="Блог" description="Последние записи">
   <h1 class="heading">Последние записи</h1>

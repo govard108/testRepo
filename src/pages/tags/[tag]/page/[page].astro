@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import PostCard from '../../../../components/PostCard.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths({ paginate }) {
+  const posts = (await getCollection('posts', ({ data }) => !data.draft));
+  const tagSet = new Set<string>();
+  for (const p of posts) for (const t of p.data.tags) tagSet.add(t);
+  const tags = Array.from(tagSet);
+  return tags
+    .map((tag) => {
+      const byTag = posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+      return paginate(byTag, { pageSize: 10, params: { tag } });
+    })
+    .flat();
+}
+
+const { page } = Astro.props;
+const { tag } = Astro.params;
+---
+<BaseLayout title={`Тег: ${tag}`} description={`Записи с тегом ${tag}`}>
+  <h1 class="heading">Тег: {tag}</h1>
+  <section class="post-list">
+    {page.data.map((post) => <PostCard post={post} />)}
+  </section>
+  <Pagination page={page} />
+</BaseLayout>
