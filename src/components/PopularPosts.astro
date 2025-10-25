@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { formatDateRu } from '../utils/date';
+import { Eye, ArrowRight } from 'lucide-astro';
 
 const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .sort((a, b) => (b.data.views || 0) - (a.data.views || 0))
@@ -43,10 +44,7 @@ const categoryColors: Record<string, string> = {
                 {category}
               </span>
               <div class="post-views">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                  <circle cx="12" cy="12" r="3"></circle>
-                </svg>
+                <Eye size={16} />
                 <span>{post.data.views || 0}</span>
               </div>
             </div>
@@ -73,10 +71,7 @@ const categoryColors: Record<string, string> = {
   <div class="view-all">
     <a href={`${base}page/1/`} class="btn btn-outline">
       Посмотреть все статьи
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
+      <ArrowRight size={20} />
     </a>
   </div>
 </section>

@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { slugify } from '../../../utils/slugify';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  
+  const categoryMap = new Map<string, any[]>();
+  
+  posts.forEach(post => {
+    const category = post.data.category || 'общее';
+    if (!categoryMap.has(category)) {
+      categoryMap.set(category, []);
+    }
+    categoryMap.get(category)!.push(post);
+  });
+  
+  return Array.from(categoryMap.entries()).map(([category, categoryPosts]) => ({
+    params: { category: slugify(category) },
+    props: { 
+      category, 
+      posts: categoryPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    }
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout 
+  title={`Категория: ${category}`}
+  description={`Статьи в категории ${category}`}
+>
+  <div class="category-page">
+    <header class="page-header">
+      <h1 class="page-title">Категория: <span class="gradient-text">{category}</span></h1>
+      <p class="page-description">
+        Найдено {posts.length} {posts.length === 1 ? 'статья' : posts.length < 5 ? 'статьи' : 'статей'}
+      </p>
+    </header>
+    
+    <div class="posts-grid">
+      {posts.map((post) => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .category-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    color: var(--fg);
+  }
+
+  .page-description {
+    font-size: 1.125rem;
+    color: var(--fg-muted);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .page-title {
+      font-size: 2rem;
+    }
+  }
+</style>

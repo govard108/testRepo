@@ -1,0 +1,80 @@
+---
+import { Moon, Sun } from 'lucide-astro';
+---
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+  <Sun class="sun-icon" />
+  <Moon class="moon-icon" />
+</button>
+
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  const getTheme = () => {
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    return 'light';
+  };
+
+  const setTheme = (theme: string) => {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  };
+
+  setTheme(getTheme());
+
+  themeToggle?.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme') || 'light';
+    const next = current === 'light' ? 'dark' : 'light';
+    setTheme(next);
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .theme-toggle:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+  }
+
+  .theme-toggle :global(svg) {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .theme-toggle :global(.sun-icon) {
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
+  }
+
+  .theme-toggle :global(.moon-icon) {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  :global([data-theme="light"]) .theme-toggle :global(.sun-icon) {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  :global([data-theme="light"]) .theme-toggle :global(.moon-icon) {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0);
+  }
+</style>
