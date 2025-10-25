@@ -169,6 +169,11 @@ coverImage: "/testRepo/cover/astro.svg"
 | Playwright | MCP сервер для автоматизации браузера | https://mcpmarket.com/server/playwright-5 |
 | MindsDB | MCP сервер для ML | https://mcpmarket.com/server/mindsdb |
 
+https://medium.com/@302.AI/302-ai-claude-compatible-let-claude-code-support-any-third-party-models-8e6dc96d0310
+https://github.com/musistudio/claude-code-router
+https://medium.com/@joe.njenga/how-im-using-glm-4-5-with-claude-code-the-power-combo-set-up-4356e06be66c
+https://medium.com/mitb-for-all/part-iv-llamaindex-react-workflows-are-we-thinking-enough-232cd44a6677
+
 ***
 
 **Примечание:** Некоторые инструменты имеют ограниченную информацию в открытых источниках, для них указано "—" или "информация ограничена". Все ссылки актуальны на октябрь 2025 года.
