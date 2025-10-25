@@ -1,0 +1,193 @@
+---
+import { Home, Tags, Rss, Menu, ChevronLeft, Layers } from 'lucide-astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<aside id="sidebar" class="sidebar">
+  <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+    <ChevronLeft class="chevron-icon" />
+  </button>
+  
+  <div class="sidebar-content">
+    <nav class="sidebar-nav">
+      <a href={base} class="sidebar-link" data-tooltip="Главная">
+        <Home />
+        <span class="sidebar-link-text">Главная</span>
+      </a>
+      <a href={`${base}tags/`} class="sidebar-link" data-tooltip="Теги">
+        <Tags />
+        <span class="sidebar-link-text">Теги</span>
+      </a>
+      <a href={`${base}rss.xml`} class="sidebar-link" data-tooltip="RSS">
+        <Rss />
+        <span class="sidebar-link-text">RSS</span>
+      </a>
+    </nav>
+  </div>
+</aside>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.getElementById('sidebar-toggle');
+  
+  const getCollapsed = () => {
+    const stored = localStorage.getItem('sidebar-collapsed');
+    return stored === 'true';
+  };
+  
+  const setCollapsed = (collapsed: boolean) => {
+    if (collapsed) {
+      sidebar?.classList.add('collapsed');
+    } else {
+      sidebar?.classList.remove('collapsed');
+    }
+    localStorage.setItem('sidebar-collapsed', collapsed.toString());
+  };
+  
+  setCollapsed(getCollapsed());
+  
+  toggle?.addEventListener('click', () => {
+    const isCollapsed = sidebar?.classList.contains('collapsed');
+    setCollapsed(!isCollapsed);
+  });
+</script>
+
+<style>
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 240px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    padding: 5rem 0 1rem;
+    transition: width 0.3s ease;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar.collapsed {
+    width: 60px;
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    top: 70px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+
+  .sidebar-toggle:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .sidebar-toggle :global(svg) {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.collapsed .sidebar-toggle :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 0.5rem;
+  }
+
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .sidebar-link:hover {
+    background: var(--bg-tertiary);
+    color: var(--fg);
+  }
+
+  .sidebar-link :global(svg) {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-link-text {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .sidebar.collapsed .sidebar-link-text {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sidebar.collapsed .sidebar-link {
+    justify-content: center;
+    padding: 0.75rem;
+  }
+
+  .sidebar.collapsed .sidebar-link::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    margin-left: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+  }
+
+  .sidebar.collapsed .sidebar-link:hover::after {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 60px;
+    }
+
+    .sidebar-link-text {
+      display: none;
+    }
+
+    .sidebar-toggle {
+      display: none;
+    }
+  }
+</style>
