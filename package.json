@@ -10,17 +10,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.16.1",
-    "@astrojs/vue": "^4.0.0",
     "@astrojs/mdx": "^3.1.0",
-    "@astrojs/sitemap": "^3.1.0",
     "@astrojs/rss": "^4.0.0",
+    "@astrojs/sitemap": "^3.1.0",
+    "@astrojs/vue": "^4.0.0",
+    "astro": "^4.16.1",
     "vue": "^3.4.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.5",
     "typescript": "^5.6.0"
   }
 }

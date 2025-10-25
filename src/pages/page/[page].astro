@@ -3,14 +3,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import Pagination from '../../components/Pagination.astro';
 import { getCollection } from 'astro:content';
+import type { GetStaticPaths, Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 
-export async function getStaticPaths({ paginate }) {
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
   const posts = (await getCollection('posts', ({ data }) => !data.draft))
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
   return paginate(posts, { pageSize: 10 });
 }
 
-const { page } = Astro.props;
+const { page } = Astro.props as { page: Page<CollectionEntry<'posts'>> };
 ---
 <BaseLayout title="Блог" description="Последние записи">
   <h1 class="heading">Последние записи</h1>
