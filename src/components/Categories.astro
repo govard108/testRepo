@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+
+const categoryMap = new Map<string, { count: number; icon: string }>();
+
+const categoryIcons: Record<string, string> = {
+  'ai': '🤖',
+  'архитектура': '🏗️',
+  'backend': '⚙️',
+  'производительность': '⚡',
+  'devops': '🚀',
+  'обзоры': '📊',
+  'тестирование': '✅',
+  'инструменты': '🛠️',
+  'разработка': '💻',
+  'seo': '🔍',
+  'общее': '📝'
+};
+
+posts.forEach(post => {
+  const category = post.data.category || 'общее';
+  if (!categoryMap.has(category)) {
+    categoryMap.set(category, { 
+      count: 0, 
+      icon: categoryIcons[category] || '📝' 
+    });
+  }
+  const cat = categoryMap.get(category)!;
+  cat.count++;
+});
+
+const categories = Array.from(categoryMap.entries())
+  .map(([name, data]) => ({ name, ...data }))
+  .sort((a, b) => b.count - a.count);
+
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="categories-section">
+  <div class="section-header">
+    <h2 class="section-title">Категории</h2>
+    <p class="section-description">Исследуйте темы по интересам</p>
+  </div>
+  
+  <div class="categories-grid">
+    {categories.map(category => (
+      <a href={`${base}tags/`} class="category-card">
+        <div class="category-icon">{category.icon}</div>
+        <div class="category-content">
+          <h3 class="category-name">{category.name}</h3>
+          <div class="category-count">
+            {category.count} {category.count === 1 ? 'статья' : category.count < 5 ? 'статьи' : 'статей'}
+          </div>
+        </div>
+        <div class="category-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>

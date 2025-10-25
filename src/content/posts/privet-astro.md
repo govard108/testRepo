@@ -3,6 +3,8 @@ title: "Привет, Astro!"
 description: "Запуск нового блога на Astro с русской локалью."
 date: 2024-10-10
 tags: ["astro", "введение"]
+category: "общее"
+views: 856
 draft: false
 coverImage: "/testRepo/cover/astro.svg"
 ---

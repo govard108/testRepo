@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import { formatDateRu } from '../utils/date';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => (b.data.views || 0) - (a.data.views || 0))
+  .slice(0, 6);
+
+const base = import.meta.env.BASE_URL;
+
+const categoryColors: Record<string, string> = {
+  'ai': 'purple',
+  'архитектура': 'blue',
+  'backend': 'green',
+  'производительность': 'orange',
+  'devops': 'red',
+  'обзоры': 'cyan',
+  'тестирование': 'pink',
+  'инструменты': 'yellow',
+  'разработка': 'indigo',
+  'seo': 'teal',
+  'общее': 'gray'
+};
+---
+
+<section class="popular-posts-section" id="posts">
+  <div class="section-header">
+    <h2 class="section-title">Популярные статьи</h2>
+    <p class="section-description">Самые читаемые материалы сообщества</p>
+  </div>
+  
+  <div class="popular-posts-grid">
+    {posts.map(post => {
+      const url = `${base}posts/${post.slug}/`;
+      const category = post.data.category || 'общее';
+      const colorClass = categoryColors[category] || 'gray';
+      
+      return (
+        <article class="popular-post-card">
+          <a href={url} class="post-card-link">
+            <div class="post-card-header">
+              <span class={`post-category category-${colorClass}`}>
+                {category}
+              </span>
+              <div class="post-views">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span>{post.data.views || 0}</span>
+              </div>
+            </div>
+            
+            <h3 class="post-card-title">{post.data.title}</h3>
+            <p class="post-card-description">{post.data.description}</p>
+            
+            <div class="post-card-footer">
+              <time class="post-date" datetime={post.data.date.toISOString()}>
+                {formatDateRu(post.data.date)}
+              </time>
+              <div class="post-tags">
+                {post.data.tags.slice(0, 2).map(tag => (
+                  <span class="post-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        </article>
+      );
+    })}
+  </div>
+  
+  <div class="view-all">
+    <a href={`${base}page/1/`} class="btn btn-outline">
+      Посмотреть все статьи
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
+</section>
